@@ -16,7 +16,6 @@ const Login = () => {
     });
 
     const onSubmit = async (data) => {
-        const access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjEyMzQ1Njc4OTAiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.TGlNCKdEcfqBRt2OWKNgOHm8PIs1wU0K45Pg67n37B4";
         localStorage.setItem("access_token", access_token);
         const result = await loginUser(data);
         if (result.status) {
