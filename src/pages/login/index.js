@@ -1,9 +1,12 @@
-import { loginUser } from '@/Services/user.service';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { useAuth } from '@/hooks/useAuth';
+import { loginUser } from '@/Services/user.service';
 
 const Login = () => {
+    const { auth, setAuth } = useAuth();
     const router = useRouter();
     const { register, handleSubmit, formState: { errors }, } = useForm({
         defaultValues: {
@@ -13,14 +16,30 @@ const Login = () => {
     });
 
     const onSubmit = async (data) => {
+        const access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjEyMzQ1Njc4OTAiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.TGlNCKdEcfqBRt2OWKNgOHm8PIs1wU0K45Pg67n37B4";
+        localStorage.setItem("access_token", access_token);
         const result = await loginUser(data);
         if (result.status) {
+            const access_token = result?.data?.access_token;
+            const refresh_token = result?.data?.refresh_token;
+            localStorage.setItem("access_token", access_token);
+            localStorage.setItem("refresh_token", refresh_token);
             toast.success("User login successfully");
+            setAuth({ ...auth, isLoggedIn: true });
             router.push('/dashboard');
         } else {
             toast.error(result.error);
         }
     };
+
+
+    useEffect(() => {
+        if (auth?.isLoggedIn) {
+            router.push('/');
+        }
+    }, [auth?.isLoggedIn]);
+
+
     return (
         <section className="bg-gray-50 dark:bg-gray-900">
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">

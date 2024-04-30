@@ -1,8 +1,11 @@
 import "@/styles/globals.css";
 import { Toaster } from 'react-hot-toast';
+import { AuthProvider } from "@/context/AuthContext";
 
 export default function App({ Component, pageProps }) {
-  return <Component {...pageProps}>
-    <Toaster position='top-center' reverseOrder={false} />
-  </Component>;
+  return (<AuthProvider>
+    <Component {...pageProps}>
+      <Toaster position='top-center' reverseOrder={false} />
+    </Component>;
+  </AuthProvider>)
 }
