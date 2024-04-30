@@ -16,7 +16,6 @@ const Login = () => {
     });
 
     const onSubmit = async (data) => {
-        localStorage.setItem("access_token", access_token);
         const result = await loginUser(data);
         if (result.status) {
             const access_token = result?.data?.access_token;
